@@ -2,13 +2,15 @@ import sys
 import cv2 as cv
 import numpy as np
 import matplotlib.pyplot as plt
+import os
+from pretraitement import *
 
 
-def HoughTreeatement(img, image_name):
+def HoughTreeatement(img, nom_image):
     default_file = img
 
     # Charger une image
-    src = cv.imread(cv.samples.findFile(image_name), cv.IMREAD_COLOR)
+    src = cv.imread(cv.samples.findFile(nom_image), cv.IMREAD_COLOR)
     # Vérifier si l'image est chargée correctement
     if src is None:
         print("Erreur lors de l'ouverture de l'image!")
@@ -16,13 +18,15 @@ def HoughTreeatement(img, image_name):
         return -1
 
     gray = cv.cvtColor(src, cv.COLOR_BGR2GRAY)
+    seuil = find_best_threshold(gray)
+    seuillage(seuil, gray)
     gray = cv.medianBlur(gray, 5)
 
     rows = gray.shape[0]
     # Augmentez la valeur de minRadius pour rechercher des cercles plus grands
     circles = cv.HoughCircles(gray, cv.HOUGH_GRADIENT, 1, rows / 8,
                               param1=100, param2=30,
-                              minRadius=10, maxRadius=100)
+                              minRadius=50, maxRadius=200)
 
     if circles is not None:
         circles = np.uint16(np.around(circles))
