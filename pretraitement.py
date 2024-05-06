@@ -1,22 +1,16 @@
 import numpy as np
 from PIL import Image
 import matplotlib.pyplot as plt
+import matplotlib.image as mpimg
 import os
 import cv2
 import time
 
-def normalize_image(image_path):
-    image = cv2.imread(image_path)
-    
-    if image is None:
-        print(f"Erreur : Impossible de charger l'image {image_path}")
-        return None
-    
-    if len(image.shape) > 2 and image.shape[2] > 1:
-        image = cv2.cvtColor(image, cv2.COLOR_BGR2GRAY)
-    
-    normalized_image = image / 255.0
-    return normalized_image
+def color_to_gray(img):
+    R, G, B = img[:, :, 0], img[:, :, 1], img[:, :, 2]
+    imgGray = 0.2989 * R + 0.5870 * G + 0.1140 * B
+    return imgGray
+        
 
 def threshold_image(im, th):
     thresholded_im = np.zeros(im.shape)
@@ -45,21 +39,12 @@ def find_best_threshold(im):
     best_threshold = threshold_range[np.argmin(criterias)]
     return best_threshold
 
-start = time.time()
+def seuillage(seuil, image):
+    return np.where(image>seuil/256, 1, image)
 
-path_image = '/Users/djibrildahoub/Documents/cours/2023_2024/SS6/Image/Images/183.jpg'
-im = np.asarray(Image.open(path_image).convert('L'))  # Convertir l'image en niveaux de gris
-im_otsu = threshold_image(im, find_best_threshold(im))
 
-# Afficher les images
-"""plt.figure(figsize=(20, 10))
-plt.subplot(1, 2, 1)
-plt.title('Original Image', fontsize=20)
-plt.imshow(im, cmap='gray')  # Spécifier que l'image est en niveaux de gris
-plt.subplot(1, 2, 2)"""
-plt.title('Otsu Method Image', fontsize=20)
-plt.imshow(im_otsu, cmap='gray')  # Spécifier que l'image est en niveaux de gris
-plt.tight_layout()
-plt.show()
+'''image = '147.jpg'
+best_threshold_image = find_best_threshold(image)
+print(best_threshold_image)'''
 
-print(time.time() - start)
+#color_to_gray()
