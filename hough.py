@@ -28,17 +28,27 @@ def HoughTreeatement(img, nom_image):
                               param1=100, param2=30,
                               minRadius=50, maxRadius=200)
 
+    circle_data = []  # Liste pour stocker les données des cercles
+    max_circles = 12
     if circles is not None:
         circles = np.uint16(np.around(circles))
+        count = 0
         for i in circles[0, :]:
+            if count >= max_circles:
+                break
             center = (i[0], i[1])
+            radius = i[2]
             # centre du cercle
             cv.circle(src, center, 1, (0, 100, 100), 3)
             # contour du cercle
-            radius = i[2]
             cv.circle(src, center, radius, (255, 0, 255), 3)
 
-    return src
+            # Ajouter les coordonnées du centre et un point sur le contour (à droite du centre)
+            circle_data.append((center, (center[0] + radius, center[1])))
+
+            count += 1
+
+    return src, circle_data
 
 '''img = "149.jpg"
 image_name = "149.jpg"

@@ -1,7 +1,7 @@
 from hough import HoughTreeatement
-from candyTest import CandiTreatement
 from pretraitement import *
 import matplotlib.pyplot as plt
+import os
 
 
 
@@ -14,8 +14,10 @@ def main(img):
     # Extraire le nom de l'image à partir du chemin
     nom_image = os.path.basename(img)
     image = mpimg.imread(img)
-    image_traitee = HoughTreeatement(image, nom_image)
+    image_traitee, images_data = HoughTreeatement(image, nom_image)
+    '''for data in images_data:
+        print("center 1 : " + str(data[0]) + ", dimaètre_point : " + str(data[1]))'''
     see(image_traitee)
 
-img = '19.jpg'
+img = "17.jpg"
 main(img)
