@@ -7,15 +7,7 @@ from pretraitement import *
 
 
 def HoughTreeatement(img, nom_image):
-    default_file = img
-
-    # Charger une image
-    src = cv.imread(cv.samples.findFile(nom_image), cv.IMREAD_COLOR)
-    # Vérifier si l'image est chargée correctement
-    if src is None:
-        print("Erreur lors de l'ouverture de l'image!")
-        print("Utilisation: hough_circle.py [nom_image -- par défaut"  + default_file + '] \n')
-        return -1
+    src = img
 
     gray = cv.cvtColor(src, cv.COLOR_BGR2GRAY)
     seuil = find_best_threshold(gray)
@@ -48,12 +40,4 @@ def HoughTreeatement(img, nom_image):
 
             count += 1
 
-    return src, circle_data
-
-'''img = "149.jpg"
-image_name = "149.jpg"
-image = HoughTreeatement(img, image_name)
-
-plt.imshow(image, cmap=plt.cm.gray)
-plt.gca()
-plt.show()'''
+    return circle_data

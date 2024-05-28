@@ -1,5 +1,6 @@
 from hough import HoughTreeatement
 from pretraitement import *
+from evaluation import *
 import matplotlib.pyplot as plt
 import os
 
@@ -10,14 +11,16 @@ def see(img):
     plt.gca()
     plt.show()
 
-def main(img):
+def detection(img,img_json):
     # Extraire le nom de l'image à partir du chemin
     nom_image = os.path.basename(img)
     image = mpimg.imread(img)
-    image_traitee, images_data = HoughTreeatement(image, nom_image)
-    '''for data in images_data:
-        print("center 1 : " + str(data[0]) + ", dimaètre_point : " + str(data[1]))'''
-    see(image_traitee)
+    images_data = HoughTreeatement(image, nom_image)
+    eval = evaluation_detection(images_data,img_json)
+    taux_piece_fausse = evaluation_nombre_piece(images_data,img_json)
+    print("eval = " + str(eval) + ", taux piece fausse = " + str(taux_piece_fausse))
+    return eval,taux_piece_fausse
 
-img = "17.jpg"
-main(img)
+img = "validation/0.jpg"
+img_json = "json_files/0.json"
+detection(img,img_json)
