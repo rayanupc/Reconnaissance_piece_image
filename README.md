@@ -1,6 +1,6 @@
 # Projet Image 
 
-## Prérequis
+## Résumé des objectifs du projet
 - A définir.
 
 ## Execution :
